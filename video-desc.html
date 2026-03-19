@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>片段视频描述</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
+body {background:#121212;color:#e0e0e0;padding:20px;max-width:1200px;margin:0 auto}
+.container {background:#1e1e1e;border:1px solid #333;border-radius:12px;padding:30px;margin-bottom:20px}
+h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
+.video-section {margin-bottom:40px}
+.video-item {background:#2d2d2d;border-radius:8px;padding:20px;margin-bottom:30px;transition:all 0.3s ease}
+.video-item:hover {border:1px solid #4fc3f7;box-shadow:0 0 10px rgba(79, 195, 247, 0.2)}
+.video-preview {position:relative;width:100%;aspect-ratio:16/9;background:#333;border-radius:8px;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:15px}
+.video-preview:hover {background:#3a3a3a}
+.video-preview video {position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.play-icon {position:absolute;bottom:15px;left:15px;z-index:1;width:40px;height:40px;background:rgba(79, 195, 247, 0.8);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease}
+.play-icon:hover {transform:scale(1.1);background:rgba(79, 195, 247, 0.9)}
+.play-icon-inner {width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:18px solid white;margin-left:3px}
+.pause-icon {width:16px;height:16px;border-left:5px solid white;border-right:5px solid white;display:flex;align-items:center;justify-content:center}
+.video-title {font-weight:bold;color:#4fc3f7;margin-bottom:10px;font-size:16px}
+.video-desc {line-height:1.6;background:#333;padding:15px;border-radius:6px;cursor:pointer;transition:all 0.2s;text-align:left;white-space:pre-wrap}
+.video-desc:hover {color:#4fc3f7}
+.back-link {display:inline-block;margin-top:20px;padding:10px 20px;background:#0288d1;color:#fff;border-radius:6px;text-decoration:none;transition:opacity 0.2s}
+.back-link:hover {opacity:0.9}
+.notification {position:fixed;bottom:20px;right:20px;padding:12px 18px;background:#26a69a;color:#111;border-radius:8px;opacity:0;transition:opacity .3s;z-index:9999;}
+.notification.show {opacity:1}
+@media(max-width:768px) {
+  .video-preview {aspect-ratio:4/3}
+  .play-icon {width:60px;height:60px}
+  .play-icon-inner {border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:24px solid white;margin-left:4px}
+  .pause-icon {width:20px;height:20px;border-left:6px solid white;border-right:6px solid white}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>片段视频描述</h1>
+  
+  <div class="video-section">
+    <div class="video-item">
+      <div class="video-preview" onclick="playVideo(1)">
+        <video id="video1" width="100%" height="100%" loop>
+          <source src="file:///E:/CD/videos/【GMV】- 1.mp4" type="video/mp4">
+          您的浏览器不支持视频播放
+        </video>
+        <div class="play-icon">
+          <div class="play-icon-inner"></div>
+        </div>
+      </div>
+      <div class="video-title">视频片段 1：动态多风格角色展示</div>
+      <div class="video-desc" onclick="copyText(this)">
+视频复刻提示词：动态多风格角色展示
+节奏：快速剪辑、动态转场，视觉与音乐节拍、情绪起伏完全同步
+多样艺术风格：在超精细写实 CGI、风格化游戏过场 CGI（如《守望先锋》《Apex 英雄》《英雄联盟》）、高品质动漫画风（如《咒术回战》《鬼灭之刃》）之间无缝切换。
+光影：戏剧化、强对比，霓虹光效（绿、蓝、红）、体积光、武器 / 魔法带来的强光闪烁。
+色调：神秘场景偏暗、厚重、低饱和；战斗与奇幻场景鲜艳高饱和。
+镜头运动：快速推拉、跟拍、轨道运镜、慢推营造张力，激烈战斗时使用倾斜构图。
+特写：频繁面部特写、手部操作细节（上弹、按按钮）、武器精密结构。
+全景：偶尔使用广角镜头展示宏大环境（未来都市、奇幻地貌、战场）。
+分镜内容（逐镜描述与顺序）
+开篇 — 诡异神秘（0:00–0:08）
+场景：黑暗、破败的工业密室，有长凳与发光绿色通风屏
+主体：一个驼背、装甲、疑似机械的角色（机甲或重装战士）沉默坐在长凳上，被绿光背光勾勒轮廓
+动作：缓慢、令人不安的推镜
+氛围：压抑、不祥、充满悬念
+转场进入战斗 — 快速剪辑（0:15–1:57）
+保险库大门：特写巨型金属保险库门关闭，蒸汽 / 烟雾喷出，背景为白色砖墙（写实 CGI）
+冷酷特工：戴墨镜、背头、深色风衣男性角色，手持手枪，神情严肃（写实 CGI）
+帅气枪手：金发短发、贝雷帽、干练女性，自信持枪，直视镜头并轻微坏笑（游戏过场 CGI）
+列车少女：背影视角，粉色双马尾、紫色外套带金龙图案，站在明亮空荡的列车车厢内（动漫风格）
+神秘古物：戴手套的手伸出，特写手持精致复古金属吊坠 / 怀表，背景荒凉岩石（写实 CGI）
+紧握拳头：戴手套的手紧握成拳，微弱红光反射（写实 CGI）
+动漫坠落：黑发、深色长风衣男性动漫角色（类似佐助）在黑暗风暴天空中戏剧性向后坠落（动漫风格）
+硬核战士：光头战术装备女性，神情坚定，手持步枪（写实 CGI）
+持枪女学生：穿校服、黑发、戴发带的年轻女性，手持手枪（游戏过场 CGI）
+武器上弹特写 1：极限特写戴手套的手熟练装填弹匣，可见红色内部机械结构（写实 CGI）
+弹壳弹出：一枚金色弹壳从枪械中优雅弹出（写实 CGI）
+英雄微笑：高大装甲男性角色（如守望先锋莱因哈特），金发，自信微笑（游戏过场 CGI）
+异域交易：猪面男性坐在昏暗中式餐厅，传统服饰的美女将金色精致物件放在他面前（CGI / 动漫混合）
+国际象棋：戴手套的手移动半透明骑士棋子，棋盘未来感十足（CGI）
+水滴：特写一滴水珠落在干裂荒凉地面，随后一滴暗红色液体滴入黑色液体碗中（写实 CGI）
+茶道：手优雅地将绿茶倒入传统茶杯（CGI）
+公文包交易：黑衣皮衣女性伸手去拿桌上金属公文包，对面有另一双手（写实 CGI）
+快乐机器人持枪：友好机器人（如 Apex 英雄探路者）手持未来步枪，屏幕显示笑脸，兴奋举起手臂（游戏过场 CGI）
+武器上弹特写 2：特写双手装填未来步枪（写实 CGI）
+火焰凝视：光头女性，眼神锐利，背景熊熊烈火（写实 CGI）
+双枪战士：白色侧削发型女性，手持两把未来手枪，气场强大坚定（游戏过场 CGI）
+机枪枪管：极限特写大型未来加特林机枪复杂旋转枪管（CGI）
+兜帽狙击手：兜帽角色，绿色发光眼睛，在黑暗环境中瞄准巨型步枪（CGI）
+机器人狙击手：之前的快乐机器人（探路者）通过狙击镜瞄准（游戏过场 CGI）
+女狙击手：黑发女性，专注瞄准狙击枪（写实 CGI）
+飞越城市：未来机器人飞越夜晚霓虹赛博都市（CGI）
+魔法箭：魔法箭飞速破空，命中山间古木桥上红色发光靶心（奇幻 CGI）
+坠落士兵：战术装备士兵在云层天空中戏剧性坠落（写实 CGI）
+金色面具：金色面具角色快速闪过（CGI）
+动漫打斗 1：白衣黑裙女性动漫角色与黑衣对手激烈格斗，火花四溅（动漫风格）
+天使对战恶魔：带翼天使装甲角色与黑暗恶魔激战，随后天使飞向明亮云层天空（史诗奇幻 CGI）
+动漫打斗 2：强势动漫角色（如咒术回宿傩）重拳击中对手（动漫风格）
+森林爆炸：绿色森林中发生巨大爆炸，烟尘与碎片飞溅（CGI）
+持枪女学生：同一校服女学生，手持更强力步枪，坚定前行（游戏过场 CGI）
+动漫换弹：暖琥珀光环境下，双手装填老式手枪特写（动漫风格）
+发光枪击：女性开枪，发射耀眼发光弹丸（CGI）
+剑姬战士：女战士持剑与盾，在古老废墟中激烈战斗（奇幻 CGI）
+竞技场格斗：男性角色在黑暗未来竞技场中完成杂技踢腿或跳跃（游戏过场 CGI）
+机器人决斗：持剑女性与流线型人形机器人在霓虹走廊激战（科幻 CGI）
+武器充能：极限特写未来武器核心充能发光（CGI）
+发光立方体：女性手持发光立方体装置（CGI）
+动漫能量拳：男性动漫角色周身白色发光轮廓，打出强力能量拳（动漫风格）
+凶狠瞄准：白发男性动漫角色持枪直指镜头，邪魅狞笑（动漫风格）
+闪电冲刺：七大罪梅利奥达斯持矛，被闪电环绕，在黑暗风暴地貌高速突进（动漫风格）
+机械舞者：优雅骷髅或机械角色在复古华丽书房 / 图书馆中优雅舞动（蒸汽朋克 CGI）
+悬崖坠落：人物从极高悬崖垂直坠落（写实 CGI）
+面具美人：东方奇幻黑发女性，手持精致面具，对镜头俏皮眨眼（奇幻 CGI）
+加特林扫射：同一面具女性，手持巨型加特林猛烈开火，神情凶狠（奇幻 CGI）
+沙漠狙击手：士兵趴在沙漠中，使用高度定制狙击枪瞄准（写实 CGI）
+能量球射击：金属球体悬浮在小巷，随后明亮激光般能量光束穿透角色（科幻 CGI）
+雷之呼吸：鬼灭之刃我妻善逸发动攻击，被动态闪电与风效包围（动漫风格）
+戏剧性对峙：红内衬黑斗篷男性回头看向手持发光长剑的装甲战士（史诗奇幻 CGI）
+复古怀表：戴手套的手开合精致金色复古怀表，齿轮微动（写实 CGI）
+战术平板：戴手套的手操作未来感坚固平板，显示地图或战术界面（科幻 CGI）
+防毒面具突入（赫里福德基地）：戴防毒面具、穿战术装备的角色持枪看向破窗，文字叠加：英国 赫里福德基地，随后悄悄开门进入暗室（硬核写实 CGI）
+蓝色能量冲击：强力蓝色能量冲击击中岩石废墟，引发爆炸，身穿白色未来装甲的女战士被蓝光包裹或做出反应（科幻 / 奇幻 CGI）
+战士休憩：同一女战士靠在废墟上，看似疲惫但仍持武器（科幻 / 奇幻 CGI）
+沉思赛博格：机械忍者（如守望先锋源氏）背武士刀，沉思望向远方（游戏过场 CGI）
+兽人之战：身穿暗黑华丽盔甲的女战士与多名绿皮兽人激战，挥剑释放大范围能量攻击（奇幻 CGI）
+魔法飞升：带翼天使角色升空，周围黑影坠落，随后释放强力紫色能量波（史诗奇幻 CGI）
+羽族战斗与相拥：风格化羽族人类角色（如英雄联盟霞）展开彩色羽翼与黑影战斗，随后拥抱同类角色（奇幻游戏过场 CGI）
+结尾 — 神秘凝视
+红发狐耳女性，身穿深色兜帽斗篷，眼神锐利直视镜头，表情神秘、魅惑且洞悉一切（奇幻 / 动漫过场 CGI）
+声音设计（隐含）
+音乐主导剪辑与转场，武器、魔法、爆炸、角色动作音效锋利、冲击力强。</div>
+    </div>
+    
+    <div class="video-item">
+      <div class="video-preview" onclick="playVideo(2)">
+        <video id="video2" width="100%" height="100%" loop>
+          <source src="file:///E:/CD/videos/【GMV】- 2.mp4" type="video/mp4">
+          您的浏览器不支持视频播放
+        </video>
+        <div class="play-icon">
+          <div class="play-icon-inner"></div>
+        </div>
+      </div>
+      <div class="video-title">视频片段 2：赛博朋克城市</div>
+      <div class="video-desc" onclick="copyText(this)">视觉风格 
+ 美学：史诗奇幻、黑暗奇幻、未来科幻、东方神话。 
+ 画质：高细节、写实渲染，搭配风格化魔法特效。 
+ 光影与色彩：戏剧化光影，对比强烈，色调从深蓝、紫色过渡到炽烈红与金色，带有空灵光晕；使用体积光与氛围特效（烟雾、雾气、火花、水花）。 
+ 构图：动态运镜，包括缓慢揭晓、戏剧化推拉、广角全景、面部与手部特写、战斗跟拍；转场自然柔和，部分使用魔法光晕或闪光过渡。 
+ 角色 
+ 展示至少 8–10 位风格鲜明的女性角色，每位代表独特人设： 
+ 女巫 / 法师：优雅黑发，蓝 / 紫发光眼眸，操控能量。 
+ 恶魔女王 / 黑暗女神：气场强大，红肤或带有恶魔特征与犄角，力量狂暴。 
+ 铠甲战士 / 女武神：坚毅、久经沙场，身着华丽铠甲，眼神坚定，掌控元素或物理力量。 
+ 神秘仙姬 / 女皇（东方风格）：华贵装扮，使用古老魔法，可召唤火焰或操控毁灭之力。 
+ 改造人 / 仿生人：线条流畅，带有金属部件，动作精准，使用未来武器。 
+ 黑暗法师 / 魔女：哥特华丽服饰，暗黑妆容，强大而危险，操控黑暗能量。 
+ 光明 / 水系元素法师：空灵飘逸，白 / 蓝色服饰，可施展治愈或强力防御魔法。 
+ 敏捷武者 / 刺客（东方风格）：深色装束，动作迅捷，使用刀剑，可能隐藏黑暗面。 
+ 同时加入各类奇幻生物或士兵作为敌人。 
+ 场景 
+ 在多个高奇幻 / 科幻场景中平滑切换： 
+ 黑暗、烟雾弥漫的虚空或洞穴，用于神秘登场。 
+ 色彩鲜艳、空灵的异世界（红 / 粉或蓝 / 紫），带有发光有机结构。 
+ 破败、暴雨中的城市景观，含标志性建筑（如伦敦眼）。 
+ 华丽、庄严的王座厅（东西方奇幻风格均可）。 
+ 荒凉、岩石遍布的外星废墟，展现破坏与能量冲击。 
+ 火焰弥漫的末日战场或天空。 
+ 宁静、雾气缭绕的竹林，带有发光古建筑。 
+ 水下都市或战斗场景。 
+ 哥特式破败城堡或被侵蚀的建筑。 
+ 纯净、光明的空灵维度，多用于英雄登场。 
+ 动作与转场 
+ 角色登场：以模糊身影开始，缓慢展露面容与能力。 
+ 魔法与战斗：角色主动施法、释放能量（蓝、紫、红、金、绿）、剑术对决、释放毁灭性攻击。 
+ 变身：包含戏剧化变身（人类转恶魔、战士转炽天使、优雅舞者转怪物、战士进阶更强魔法形态），搭配强烈视觉特效。 
+ 情绪弧线：通过表情与肢体传递坚韧、决绝、力量，偶尔流露绝望或疯狂。 
+ 叙事节奏：蓄力、史诗对决、脆弱时刻、最终胜利或压倒性力量爆发。 
+ 环境互动：魔法影响环境、建筑崩塌、元素随力量响应。 
+ 整体基调 
+ 史诗、震撼、神秘、强大、偏暗黑、戏剧张力拉满。 
+ 音乐 
+ 使用强力管弦乐配乐，节奏起伏强烈，搭配空灵女声，与参考曲目风格接近；音乐与画面强度、情绪变化同步。</div>
+    </div>
+    
+    <div class="video-item">
+      <div class="video-preview" onclick="playVideo(3)">
+        <div class="play-icon"></div>
+      </div>
+      <div class="video-title">视频片段 3：奇幻森林探险</div>
+      <div class="video-desc" onclick="copyText(this)">奇幻风格森林场景，阳光透过树叶洒下斑驳光影，角色在林间穿行，周围有发光的植物和小型 magical creatures，镜头跟随角色视角，营造探索氛围。</div>
+    </div>
+    
+    <div class="video-item">
+      <div class="video-preview" onclick="playVideo(4)">
+        <div class="play-icon"></div>
+      </div>
+      <div class="video-title">视频片段 4：科幻机甲战斗</div>
+      <div class="video-desc" onclick="copyText(this)">科幻风格机甲战斗场景，巨大的机甲在城市中对战，爆炸特效震撼，镜头快速切换，展现战斗的激烈与破坏力，机械细节丰富。</div>
+    </div>
+    
+    <div class="video-item">
+      <div class="video-preview" onclick="playVideo(5)">
+        <div class="play-icon"></div>
+      </div>
+      <div class="video-title">视频片段 5：古风宫廷场景</div>
+      <div class="video-desc" onclick="copyText(this)">古风宫廷场景，华丽的宫殿内，身着古装的角色进行礼仪活动，镜头从全景逐渐推近，展现细节，色彩富丽堂皇，氛围庄重典雅。</div>
+    </div>
+  </div>
+  
+  <a href="aicd.html" class="back-link">返回主页面</a>
+</div>
+
+<div class="notification" id="notification"></div>
+
+<script>
+  // 视频预览功能
+  function playVideo(id) {
+    if (id === 1) {
+      // 视频片段1在页面内播放
+      const video = document.getElementById('video1');
+      const playIcon = document.querySelector('.video-item:nth-child(1) .play-icon');
+      if (video.paused) {
+        video.play();
+        playIcon.innerHTML = '<div class="pause-icon"></div>';
+        showNotification('视频开始播放');
+      } else {
+        video.pause();
+        playIcon.innerHTML = '<div class="play-icon-inner"></div>';
+        showNotification('视频已暂停');
+      }
+    } else if (id === 2) {
+      // 视频片段2在页面内播放
+      const video = document.getElementById('video2');
+      const playIcon = document.querySelector('.video-item:nth-child(2) .play-icon');
+      if (video.paused) {
+        video.play();
+        playIcon.innerHTML = '<div class="pause-icon"></div>';
+        showNotification('视频开始播放');
+      } else {
+        video.pause();
+        playIcon.innerHTML = '<div class="play-icon-inner"></div>';
+        showNotification('视频已暂停');
+      }
+    } else {
+      showNotification(`正在预览视频片段 ${id}`);
+      // 这里可以添加实际的视频播放逻辑
+      console.log(`Playing video ${id}`);
+    }
+  }
+
+  // 复制文本功能
+  function copyText(element) {
+    const text = element.textContent.trim();
+    copyToClipboard(text);
+  }
+
+  // 复制到剪贴板函数
+  function copyToClipboard(text) {
+    // 方案1：优先使用Clipboard API（现代浏览器）
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          showNotification('描述词已复制到剪贴板');
+        })
+        .catch(err => {
+          console.log('Clipboard API失败，使用降级方案:', err);
+          fallbackCopyTextToClipboard(text);
+        });
+    } else {
+      // 方案2：降级方案（兼容所有浏览器）
+      fallbackCopyTextToClipboard(text);
+    }
+  }
+
+  // 降级复制功能
+  function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      showNotification('描述词已复制到剪贴板');
+    } catch (err) {
+      console.error('复制失败:', err);
+      showNotification('复制失败，请手动复制', 'error');
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
+  // 显示通知
+  function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification show ${type}`;
+    
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+
+  // 生成视频第100帧作为封面
+  function generateVideoThumbnails() {
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+      video.addEventListener('loadedmetadata', function() {
+        // 计算第100帧的时间（假设30fps）
+        const frameTime = 100 / 30; // 约3.33秒
+        
+        // 设置视频.currentTime到第100帧
+        video.currentTime = frameTime;
+        
+        // 当视频到达指定时间时捕获帧
+        video.addEventListener('seeked', function captureFrame() {
+          // 创建canvas元素
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          
+          // 绘制视频当前帧（第100帧）
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          
+          // 将canvas转换为base64图片
+          const thumbnail = canvas.toDataURL('image/jpeg');
+          
+          // 设置为视频预览区域的背景
+          const preview = video.parentElement;
+          preview.style.backgroundImage = `url(${thumbnail})`;
+          preview.style.backgroundSize = 'cover';
+          preview.style.backgroundPosition = 'center';
+          
+          // 将视频重置到开始
+          video.currentTime = 0;
+          
+          // 移除事件监听器
+          video.removeEventListener('seeked', captureFrame);
+        }, { once: true });
+      });
+      
+      // 触发loadedmetadata事件
+      if (video.readyState >= 1) {
+        const event = new Event('loadedmetadata');
+        video.dispatchEvent(event);
+      }
+    });
+  }
+
+  // 页面加载完成后生成缩略图
+  window.addEventListener('DOMContentLoaded', generateVideoThumbnails);
+</script>
+</body>
+</html>

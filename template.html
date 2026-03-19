@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>万能替换模板</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
+body {background:#121212;color:#e0e0e0;padding:20px;max-width:1200px;margin:0 auto}
+.container {background:#1e1e1e;border:1px solid #333;border-radius:12px;padding:30px;margin-bottom:20px}
+h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
+h2 {color:#81d4fa;margin:20px 0 15px;padding-left:8px;border-left:3px solid #4fc3f7}
+h3 {color:#e0e0e0;margin:15px 0 10px}
+.template-section {background:#2d2d2d;border-radius:8px;padding:20px;margin-bottom:20px}
+.template-item {background:#333;border-radius:6px;padding:15px;margin-bottom:10px;transition:all 0.3s ease}
+.template-item:hover {border:1px solid #4fc3f7;box-shadow:0 0 10px rgba(79, 195, 247, 0.2)}
+.template-title {font-weight:bold;color:#4fc3f7;margin-bottom:8px}
+.template-content {line-height:1.6;cursor:pointer;transition:all 0.2s}
+.template-content:hover {color:#4fc3f7}
+.back-link {display:inline-block;margin-top:20px;padding:10px 20px;background:#0288d1;color:#fff;border-radius:6px;text-decoration:none;transition:opacity 0.2s}
+.back-link:hover {opacity:0.9}
+.notification {position:fixed;bottom:20px;right:20px;padding:12px 18px;background:#26a69a;color:#111;border-radius:8px;opacity:0;transition:opacity .3s;z-index:9999;}
+.notification.show {opacity:1}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>万能替换模板</h1>
+  
+  <h2>一、角色替换</h2>
+  
+  <div class="template-section">
+    <div class="template-item">
+      <div class="template-title">保留姿态，换人物</div>
+      <div class="template-content">保留原有构图、动作姿态、光影和透视，仅替换角色为（新角色），面部特征清晰，人体结构准确，细节丰富，画质清晰。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">只换脸，不换人</div>
+      <div class="template-content">保留人物姿势、服装、场景和光影，仅替换面部为（新脸型 / 风格），五官精致，比例协调，画质高清。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">换性别 / 年龄</div>
+      <div class="template-content">保持动作、场景、构图不变，将人物替换为（男 / 女 / 少年 / 老年），风格统一，光影自然，细节完整。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">换服装 / 造型</div>
+      <div class="template-content">保留人物五官、姿态、场景不变，替换服装为（风格 / 类型），发型同步更换，整体协调，质感真实。</div>
+    </div>
+  </div>
+  
+  <h2>二、场景替换</h2>
+  
+  <div class="template-section">
+    <div class="template-item">
+      <div class="template-title">只换背景，保留人物</div>
+      <div class="template-content">保留前景人物、动作、光影和构图，移除原有背景，替换为（新场景），景深合理，氛围统一，细节丰富。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">室内 ↔ 室外互换</div>
+      <div class="template-content">保持人物、姿态、构图不变，将场景替换为（室内 / 室外 / 城市 / 自然），光影适配新环境，透视正确。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">风格化场景替换</div>
+      <div class="template-content">保留主体不变，背景替换为（赛博朋克 / 古风 / 科幻 / 梦幻）场景，色调统一，电影级质感，高清细节。</div>
+    </div>
+  </div>
+  
+  <h2>三、风格 / 画质替换</h2>
+  
+  <div class="template-section">
+    <div class="template-item">
+      <div class="template-title">换画风</div>
+      <div class="template-content">保留人物、构图、动作不变，整体画风替换为（写实 / 动漫 / 插画 / 胶片），色彩和谐，线条流畅。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">换光影色调</div>
+      <div class="template-content">保持主体不变，替换光影为（柔光 / 硬光 / 暖光 / 冷光 / 电影光），氛围感强，色调统一。</div>
+    </div>
+    
+    <div class="template-item">
+      <div class="template-title">通用高清强化</div>
+      <div class="template-content">超高分辨率，细节丰富，质感真实，光影自然，构图完美，无瑕疵，专业级画质。</div>
+    </div>
+  </div>
+  
+  <a href="aicd.html" class="back-link">返回主页面</a>
+</div>
+
+<div class="notification" id="notification"></div>
+
+<script>
+  // 为所有template-content元素添加点击复制功能
+  document.querySelectorAll('.template-content').forEach(element => {
+    element.addEventListener('click', function() {
+      const text = this.textContent.trim();
+      copyToClipboard(text);
+    });
+  });
+
+  // 复制到剪贴板函数
+  function copyToClipboard(text) {
+    // 方案1：优先使用Clipboard API（现代浏览器）
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          showNotification('内容已复制到剪贴板');
+        })
+        .catch(err => {
+          console.log('Clipboard API失败，使用降级方案:', err);
+          fallbackCopyTextToClipboard(text);
+        });
+    } else {
+      // 方案2：降级方案（兼容所有浏览器）
+      fallbackCopyTextToClipboard(text);
+    }
+  }
+
+  // 降级复制功能
+  function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      showNotification('内容已复制到剪贴板');
+    } catch (err) {
+      console.error('复制失败:', err);
+      showNotification('复制失败，请手动复制', 'error');
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
+  // 显示通知
+  function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification show ${type}`;
+    
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+</script>
+</body>
+</html>

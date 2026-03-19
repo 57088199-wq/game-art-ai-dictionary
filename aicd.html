@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏美术AI词典-测试版-制作者耂田</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans}
+body{background:#121212;color:#e0e0e0;padding:20px;max-width:1200px;margin:0 auto}
+.container{background:#1e1e1e;border:1px solid #333;border-radius:12px;padding:30px;margin-bottom:20px}
+h1{color:#fff;text-align:center;margin-bottom:30px}
+.category{
+  margin-bottom:25px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+.category:hover{
+  border-color: #4fc3f7;
+  background-color: rgba(79, 195, 247, 0.05);
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.1);
+}
+.category-title{font-size:18px;color:#4fc3f7;border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:15px;display:flex;justify-content:space-between;align-items:center}
+.sub-category-title{font-size:14px;color:#81d4fa;margin:10px 0 8px;padding-left:8px;border-left:2px solid #4fc3f7;display:block;}
+.collapse-btn{background:none;border:none;color:#4fc3f7;cursor:pointer;font-size:18px;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.btn-group{margin-bottom:15px;}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.keyword-btn{padding:6px 12px;background:#2d2d2d;color:#e0e0e0;border:1px solid #444;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.keyword-btn:hover{border-color:#666;}
+.keyword-btn.active{background:#0288d1;border-color:#4fc3f7;color:#fff;}
+.result-preview-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+#prompt-output{width:100%;min-height:220px;padding:15px;background:#2d2d2d;border:1px solid #444;border-radius:8px;color:#e0e0e0;resize:vertical;font-size:14px;}
+.action-buttons{display:flex;gap:10px;margin-top:15px}
+.action-btn{padding:10px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;transition:opacity 0.2s;}
+.action-btn:hover{opacity:0.9;}
+.copy-btn{background:#26a69a;color:#111}
+.clear-btn{background:#e53935;color:#fff}
+.optimize-btn{background:#ffb74d;color:#111}
+.notification{position:fixed;bottom:20px;right:20px;padding:12px 18px;background:#26a69a;color:#111;border-radius:8px;opacity:0;transition:opacity .3s;z-index:9999;}
+.notification.show{opacity:1}
+.ai-recommendation{background:rgba(2,136,209,.1);border-left:3px solid #4fc3f7;padding:10px 15px;margin:15px 0;border-radius:0 6px 6px 0;font-size:14px;}
+
+/* 新增预览按钮样式 */
+#realtime-preview{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px;background:#2d2d2d;border:1px solid #444;border-radius:8px;gap:15px;}
+.preview-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+.preview-btn{
+  height: 100px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.preview-btn:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+/* 四个按钮的不同底色 */
+.btn-template{background:#0288d1;} /* 蓝色 - 万用替换模版 */
+.btn-video{background:#26a69a;}    /* 绿色 - 片段视频描述 */
+.btn-tools{background:#ffb74d;}    /* 橙色 - 工具链接合集 */
+.btn-material{background:#8e24aa;} /* 紫色 - 素材库 */
+
+@media(max-width:992px){
+  .result-preview-container{grid-template-columns:1fr}
+  .preview-buttons{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>游戏美术AI词典</h1>
+
+  <!-- 1. 图片类 -->
+  <div class="category">
+  <div class="category-title">
+  <span>🖼️ 图片类</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="图片生成">
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="游戏概念设计图">游戏概念设计图</button>
+      <button class="keyword-btn" data-value="角色立绘">角色立绘</button>
+      <button class="keyword-btn" data-value="场景氛围图">场景氛围图</button>
+      <button class="keyword-btn" data-value="道具设计稿">道具设计稿</button>
+      <button class="keyword-btn" data-value="UI界面设计">UI界面设计</button>
+      <button class="keyword-btn" data-value="技能特效参考图">技能特效参考图</button>
+      <button class="keyword-btn" data-value="材质纹理贴图">材质纹理贴图</button>
+      <button class="keyword-btn" data-value="角色三视图">角色三视图</button>
+      <button class="keyword-btn" data-value="场景拓扑图">场景拓扑图</button>
+      <button class="keyword-btn" data-value="分镜故事板">分镜故事板</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="角色表情参考">角色表情参考</button>
+      <button class="keyword-btn" data-value="角色装备分解图">角色装备分解图</button>
+      <button class="keyword-btn" data-value="场景平面图">场景平面图</button>
+      <button class="keyword-btn" data-value="场景剖面图">场景剖面图</button>
+      <button class="keyword-btn" data-value="特效序列帧">特效序列帧</button>
+      <button class="keyword-btn" data-value="UI图标设计">UI图标设计</button>
+      <button class="keyword-btn" data-value="Loading界面设计">Loading界面设计</button>
+      <button class="keyword-btn" data-value="登录界面设计">登录界面设计</button>
+      <button class="keyword-btn" data-value="技能图标设计">技能图标设计</button>
+      <button class="keyword-btn" data-value="道具图标设计">道具图标设计</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="角色半身像">角色半身像</button>
+      <button class="keyword-btn" data-value="角色全身像">角色全身像</button>
+      <button class="keyword-btn" data-value="怪物设计稿">怪物设计稿</button>
+      <button class="keyword-btn" data-value="宠物设计稿">宠物设计稿</button>
+      <button class="keyword-btn" data-value="坐骑设计稿">坐骑设计稿</button>
+      <button class="keyword-btn" data-value="武器设计稿">武器设计稿</button>
+      <button class="keyword-btn" data-value="载具设计稿">载具设计稿</button>
+      <button class="keyword-btn" data-value="场景物件设计">场景物件设计</button>
+      <button class="keyword-btn" data-value="环境光效参考">环境光效参考</button>
+      <button class="keyword-btn" data-value="HUD界面设计">HUD界面设计</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 2. 视频类 -->
+  <div class="category">
+  <div class="category-title">
+  <span>🎥 视频类</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="视频生成">
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="游戏宣传PV">游戏宣传PV</button>
+      <button class="keyword-btn" data-value="技能特效演示视频">技能特效演示视频</button>
+      <button class="keyword-btn" data-value="角色动作循环动画">角色动作循环动画</button>
+      <button class="keyword-btn" data-value="场景漫游视频">场景漫游视频</button>
+      <button class="keyword-btn" data-value="UI动效演示">UI动效演示</button>
+      <button class="keyword-btn" data-value="剧情过场动画">剧情过场动画</button>
+      <button class="keyword-btn" data-value="粒子特效演示">粒子特效演示</button>
+      <button class="keyword-btn" data-value="光照变化演示">光照变化演示</button>
+      <button class="keyword-btn" data-value="游戏实机演示片段">游戏实机演示片段</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="角色待机动画">角色待机动画</button>
+      <button class="keyword-btn" data-value="角色行走动画">角色行走动画</button>
+      <button class="keyword-btn" data-value="角色攻击动画">角色攻击动画</button>
+      <button class="keyword-btn" data-value="角色受击动画">角色受击动画</button>
+      <button class="keyword-btn" data-value="角色死亡动画">角色死亡动画</button>
+      <button class="keyword-btn" data-value="角色施法动画">角色施法动画</button>
+      <button class="keyword-btn" data-value="坐骑奔跑动画">坐骑奔跑动画</button>
+      <button class="keyword-btn" data-value="场景天气变化动画">场景天气变化动画</button>
+      <button class="keyword-btn" data-value="水面波纹动画">水面波纹动画</button>
+      <button class="keyword-btn" data-value="火焰燃烧动画">火焰燃烧动画</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="烟雾飘散动画">烟雾飘散动画</button>
+      <button class="keyword-btn" data-value="爆炸特效动画">爆炸特效动画</button>
+      <button class="keyword-btn" data-value="魔法护盾动画">魔法护盾动画</button>
+      <button class="keyword-btn" data-value="UI弹窗动画">UI弹窗动画</button>
+      <button class="keyword-btn" data-value="血条变化动画">血条变化动画</button>
+      <button class="keyword-btn" data-value="镜头转场动画">镜头转场动画</button>
+      <button class="keyword-btn" data-value="角色变身动画">角色变身动画</button>
+      <button class="keyword-btn" data-value="场景破坏动画">场景破坏动画</button>
+      <button class="keyword-btn" data-value="光影闪烁动画">光影闪烁动画</button>
+      <button class="keyword-btn" data-value="粒子拖尾动画">粒子拖尾动画</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 3. 美术风格 -->
+  <div class="category">
+  <div class="category-title">
+  <span>🎨 美术风格</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="美术风格">
+    <div class="sub-category-title">写实风格</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="超写实PBR">超写实PBR</button>
+      <button class="keyword-btn" data-value="影视级写实">影视级写实</button>
+      <button class="keyword-btn" data-value="照片级质感">照片级质感</button>
+      <button class="keyword-btn" data-value="次世代写实">次世代写实</button>
+      <button class="keyword-btn" data-value="拟真写实">拟真写实</button>
+      <button class="keyword-btn" data-value="电影级写实">电影级写实</button>
+      <button class="keyword-btn" data-value="物理正确渲染">物理正确渲染</button>
+      <button class="keyword-btn" data-value="影视级CG">影视级CG</button>
+      <button class="keyword-btn" data-value="真实物理材质">真实物理材质</button>
+      <button class="keyword-btn" data-value="8K超高清写实">8K超高清写实</button>
+    </div>
+
+    <div class="sub-category-title">卡通风格</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="二次元Cel-Shading">二次元Cel-Shading</button>
+      <button class="keyword-btn" data-value="日系动漫风格">日系动漫风格</button>
+      <button class="keyword-btn" data-value="美式卡通">美式卡通</button>
+      <button class="keyword-btn" data-value="Q版卡通">Q版卡通</button>
+      <button class="keyword-btn" data-value="手绘卡通">手绘卡通</button>
+      <button class="keyword-btn" data-value="迪士尼风格">迪士尼风格</button>
+      <button class="keyword-btn" data-value="皮克斯风格">皮克斯风格</button>
+      <button class="keyword-btn" data-value="三渲二">三渲二</button>
+      <button class="keyword-btn" data-value="卡通渲染">卡通渲染</button>
+      <button class="keyword-btn" data-value="日系萌系风格">日系萌系风格</button>
+    </div>
+
+    <div class="sub-category-title">风格化艺术</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="赛博朋克">赛博朋克</button>
+      <button class="keyword-btn" data-value="暗黑奇幻">暗黑奇幻</button>
+      <button class="keyword-btn" data-value="国风仙侠">国风仙侠</button>
+      <button class="keyword-btn" data-value="蒸汽朋克">蒸汽朋克</button>
+      <button class="keyword-btn" data-value="科幻机甲">科幻机甲</button>
+      <button class="keyword-btn" data-value="低多边形Low-Poly">低多边形Low-Poly</button>
+      <button class="keyword-btn" data-value="像素风格">像素风格</button>
+      <button class="keyword-btn" data-value="水墨国风">水墨国风</button>
+      <button class="keyword-btn" data-value="油画质感">油画质感</button>
+      <button class="keyword-btn" data-value="水彩风格">水彩风格</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="水墨写意">水墨写意</button>
+      <button class="keyword-btn" data-value="工笔重彩">工笔重彩</button>
+      <button class="keyword-btn" data-value="敦煌风格">敦煌风格</button>
+      <button class="keyword-btn" data-value="浮世绘风格">浮世绘风格</button>
+      <button class="keyword-btn" data-value="哥特风格">哥特风格</button>
+      <button class="keyword-btn" data-value="巴洛克风格">巴洛克风格</button>
+      <button class="keyword-btn" data-value="洛可可风格">洛可可风格</button>
+      <button class="keyword-btn" data-value="赛博废土">赛博废土</button>
+      <button class="keyword-btn" data-value="废土朋克">废土朋克</button>
+      <button class="keyword-btn" data-value="克苏鲁风格">克苏鲁风格</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="赛博武侠">赛博武侠</button>
+      <button class="keyword-btn" data-value="赛博古风">赛博古风</button>
+      <button class="keyword-btn" data-value="暗黑童话">暗黑童话</button>
+      <button class="keyword-btn" data-value="奇幻魔幻">奇幻魔幻</button>
+      <button class="keyword-btn" data-value="未来主义">未来主义</button>
+      <button class="keyword-btn" data-value="复古未来主义">复古未来主义</button>
+      <button class="keyword-btn" data-value="极简主义">极简主义</button>
+      <button class="keyword-btn" data-value="新中式风格">新中式风格</button>
+      <button class="keyword-btn" data-value="赛博国风">赛博国风</button>
+      <button class="keyword-btn" data-value="赛博禅意">赛博禅意</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="赛博和风">赛博和风</button>
+      <button class="keyword-btn" data-value="蒸汽仙侠">蒸汽仙侠</button>
+      <button class="keyword-btn" data-value="暗黑仙侠">暗黑仙侠</button>
+      <button class="keyword-btn" data-value="奇幻童话">奇幻童话</button>
+      <button class="keyword-btn" data-value="暗黑哥特">暗黑哥特</button>
+      <button class="keyword-btn" data-value="赛博原始">赛博原始</button>
+      <button class="keyword-btn" data-value="像素复古">像素复古</button>
+      <button class="keyword-btn" data-value="手绘油画">手绘油画</button>
+      <button class="keyword-btn" data-value="丙烯画风格">丙烯画风格</button>
+      <button class="keyword-btn" data-value="素描风格">素描风格</button>
+    </div>
+
+    <div class="sub-category-title">游戏IP风格</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="原神风格">原神风格</button>
+      <button class="keyword-btn" data-value="英雄联盟风格">英雄联盟风格</button>
+      <button class="keyword-btn" data-value="王者荣耀风格">王者荣耀风格</button>
+      <button class="keyword-btn" data-value="最终幻想风格">最终幻想风格</button>
+      <button class="keyword-btn" data-value="塞尔达风格">塞尔达风格</button>
+      <button class="keyword-btn" data-value="魔兽世界风格">魔兽世界风格</button>
+      <button class="keyword-btn" data-value="暗黑破坏神风格">暗黑破坏神风格</button>
+      <button class="keyword-btn" data-value="赛博朋克2077风格">赛博朋克2077风格</button>
+      <button class="keyword-btn" data-value="巫师3风格">巫师3风格</button>
+      <button class="keyword-btn" data-value="战神风格">战神风格</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="刺客信条风格">刺客信条风格</button>
+      <button class="keyword-btn" data-value="地平线零之曙光风格">地平线零之曙光风格</button>
+      <button class="keyword-btn" data-value="死亡搁浅风格">死亡搁浅风格</button>
+      <button class="keyword-btn" data-value="只狼风格">只狼风格</button>
+      <button class="keyword-btn" data-value="黑魂风格">黑魂风格</button>
+      <button class="keyword-btn" data-value="赛博朋克边缘行者风格">赛博朋克边缘行者风格</button>
+      <button class="keyword-btn" data-value="尼尔机械纪元风格">尼尔机械纪元风格</button>
+      <button class="keyword-btn" data-value="崩坏星穹铁道风格">崩坏星穹铁道风格</button>
+      <button class="keyword-btn" data-value="明日方舟风格">明日方舟风格</button>
+      <button class="keyword-btn" data-value="碧蓝航线风格">碧蓝航线风格</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 4. 人物形象 -->
+  <div class="category">
+  <div class="category-title">
+  <span>👤 人物形象</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="人物形象">
+    <div class="sub-category-title">体型特征</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="高挑修长">高挑修长</button>
+      <button class="keyword-btn" data-value="健壮魁梧">健壮魁梧</button>
+      <button class="keyword-btn" data-value="娇小玲珑">娇小玲珑</button>
+      <button class="keyword-btn" data-value="匀称健美">匀称健美</button>
+      <button class="keyword-btn" data-value="肌肉线条明显">肌肉线条明显</button>
+      <button class="keyword-btn" data-value="纤细柔美">纤细柔美</button>
+      <button class="keyword-btn" data-value="魁梧壮汉">魁梧壮汉</button>
+      <button class="keyword-btn" data-value="苗条纤细">苗条纤细</button>
+      <button class="keyword-btn" data-value="丰满圆润">丰满圆润</button>
+      <button class="keyword-btn" data-value="矮壮敦实">矮壮敦实</button>
+    </div>
+
+    <div class="sub-category-title">面部特征</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="棱角分明">棱角分明</button>
+      <button class="keyword-btn" data-value="柔和圆润">柔和圆润</button>
+      <button class="keyword-btn" data-value="精致五官">精致五官</button>
+      <button class="keyword-btn" data-value="冷艳孤傲">冷艳孤傲</button>
+      <button class="keyword-btn" data-value="阳光开朗">阳光开朗</button>
+      <button class="keyword-btn" data-value="邪魅狂狷">邪魅狂狷</button>
+      <button class="keyword-btn" data-value="古风俊美">古风俊美</button>
+      <button class="keyword-btn" data-value="赛博机械脸">赛博机械脸</button>
+      <button class="keyword-btn" data-value="异域风情">异域风情</button>
+      <button class="keyword-btn" data-value="东方古典美">东方古典美</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="西方魔幻风">西方魔幻风</button>
+      <button class="keyword-btn" data-value="凌厉眼神">凌厉眼神</button>
+      <button class="keyword-btn" data-value="温柔眼眸">温柔眼眸</button>
+      <button class="keyword-btn" data-value="邪魅一笑">邪魅一笑</button>
+      <button class="keyword-btn" data-value="面无表情">面无表情</button>
+      <button class="keyword-btn" data-value="坚毅表情">坚毅表情</button>
+      <button class="keyword-btn" data-value="妖异妆容">妖异妆容</button>
+      <button class="keyword-btn" data-value="战损妆容">战损妆容</button>
+      <button class="keyword-btn" data-value="机械义眼">机械义眼</button>
+      <button class="keyword-btn" data-value="兽耳特征">兽耳特征</button>
+    </div>
+
+    <div class="sub-category-title">服饰装扮</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="古风仙侠服饰">古风仙侠服饰</button>
+      <button class="keyword-btn" data-value="赛博朋克机甲">赛博朋克机甲</button>
+      <button class="keyword-btn" data-value="中世纪铠甲">中世纪铠甲</button>
+      <button class="keyword-btn" data-value="未来科技战服">未来科技战服</button>
+      <button class="keyword-btn" data-value="国风汉服">国风汉服</button>
+      <button class="keyword-btn" data-value="废土风格服饰">废土风格服饰</button>
+      <button class="keyword-btn" data-value="魔法师长袍">魔法师长袍</button>
+      <button class="keyword-btn" data-value="武士铠甲">武士铠甲</button>
+      <button class="keyword-btn" data-value="忍者服饰">忍者服饰</button>
+      <button class="keyword-btn" data-value="海盗服饰">海盗服饰</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="骑士铠甲">骑士铠甲</button>
+      <button class="keyword-btn" data-value="魔法师法袍">魔法师法袍</button>
+      <button class="keyword-btn" data-value="牧师服饰">牧师服饰</button>
+      <button class="keyword-btn" data-value="刺客潜行服">刺客潜行服</button>
+      <button class="keyword-btn" data-value="猎人装束">猎人装束</button>
+      <button class="keyword-btn" data-value="蛮族服饰">蛮族服饰</button>
+      <button class="keyword-btn" data-value="宫廷礼服">宫廷礼服</button>
+      <button class="keyword-btn" data-value="机械义肢">机械义肢</button>
+      <button class="keyword-btn" data-value="蒸汽朋克装备">蒸汽朋克装备</button>
+      <button class="keyword-btn" data-value="仙侠法宝装饰">仙侠法宝装饰</button>
+    </div>
+
+    <div class="sub-category-title">动作姿态</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="战斗姿态">战斗姿态</button>
+      <button class="keyword-btn" data-value="休闲站立">休闲站立</button>
+      <button class="keyword-btn" data-value="施法动作">施法动作</button>
+      <button class="keyword-btn" data-value="跳跃腾空">跳跃腾空</button>
+      <button class="keyword-btn" data-value="静坐沉思">静坐沉思</button>
+      <button class="keyword-btn" data-value="奔跑动态">奔跑动态</button>
+      <button class="keyword-btn" data-value="骑马驰骋">骑马驰骋</button>
+      <button class="keyword-btn" data-value="挥剑攻击">挥剑攻击</button>
+      <button class="keyword-btn" data-value="拉弓瞄准">拉弓瞄准</button>
+      <button class="keyword-btn" data-value="格挡防御">格挡防御</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="翻滚躲避">翻滚躲避</button>
+      <button class="keyword-btn" data-value="腾空劈砍">腾空劈砍</button>
+      <button class="keyword-btn" data-value="跪地施法">跪地施法</button>
+      <button class="keyword-btn" data-value="仰天咆哮">仰天咆哮</button>
+      <button class="keyword-btn" data-value="盘腿打坐">盘腿打坐</button>
+      <button class="keyword-btn" data-value="优雅行礼">优雅行礼</button>
+      <button class="keyword-btn" data-value="慵懒倚靠">慵懒倚靠</button>
+      <button class="keyword-btn" data-value="警戒姿态">警戒姿态</button>
+      <button class="keyword-btn" data-value="胜利欢呼">胜利欢呼</button>
+      <button class="keyword-btn" data-value="濒死倒地">濒死倒地</button>
+    </div>
+
+    <div class="sub-category-title">发型发色</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="黑色长发">黑色长发</button>
+      <button class="keyword-btn" data-value="银色短发">银色短发</button>
+      <button class="keyword-btn" data-value="粉色双马尾">粉色双马尾</button>
+      <button class="keyword-btn" data-value="蓝色渐变发色">蓝色渐变发色</button>
+      <button class="keyword-btn" data-value="红色莫西干头">红色莫西干头</button>
+      <button class="keyword-btn" data-value="白色长发">白色长发</button>
+      <button class="keyword-btn" data-value="金色卷发">金色卷发</button>
+      <button class="keyword-btn" data-value="绿色挑染">绿色挑染</button>
+      <button class="keyword-btn" data-value="紫色盘发">紫色盘发</button>
+      <button class="keyword-btn" data-value="机械光头">机械光头</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 5. 场景描述 -->
+  <div class="category">
+  <div class="category-title">
+  <span>🏙️ 场景描述</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="场景描述">
+    <div class="sub-category-title">场景类型</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="未来都市">未来都市</button>
+      <button class="keyword-btn" data-value="仙侠古风建筑">仙侠古风建筑</button>
+      <button class="keyword-btn" data-value="废土荒漠">废土荒漠</button>
+      <button class="keyword-btn" data-value="魔法森林">魔法森林</button>
+      <button class="keyword-btn" data-value="太空空间站">太空空间站</button>
+      <button class="keyword-btn" data-value="中世纪城堡">中世纪城堡</button>
+      <button class="keyword-btn" data-value="海底龙宫">海底龙宫</button>
+      <button class="keyword-btn" data-value="火山熔岩地带">火山熔岩地带</button>
+      <button class="keyword-btn" data-value="冰雪极地">冰雪极地</button>
+      <button class="keyword-btn" data-value="赛博朋克街巷">赛博朋克街巷</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="仙侠门派山门">仙侠门派山门</button>
+      <button class="keyword-btn" data-value="蒸汽朋克工厂">蒸汽朋克工厂</button>
+      <button class="keyword-btn" data-value="魔法学院">魔法学院</button>
+      <button class="keyword-btn" data-value="星际战舰内部">星际战舰内部</button>
+      <button class="keyword-btn" data-value="古代战场">古代战场</button>
+      <button class="keyword-btn" data-value="海底遗迹">海底遗迹</button>
+      <button class="keyword-btn" data-value="沙漠绿洲">沙漠绿洲</button>
+      <button class="keyword-btn" data-value="雪山神庙">雪山神庙</button>
+      <button class="keyword-btn" data-value="地下迷宫">地下迷宫</button>
+      <button class="keyword-btn" data-value="空中浮岛">空中浮岛</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="末日城市废墟">末日城市废墟</button>
+      <button class="keyword-btn" data-value="热带雨林神庙">热带雨林神庙</button>
+      <button class="keyword-btn" data-value="冰封城堡">冰封城堡</button>
+      <button class="keyword-btn" data-value="机械神庙">机械神庙</button>
+      <button class="keyword-btn" data-value="仙侠秘境">仙侠秘境</button>
+      <button class="keyword-btn" data-value="赛博朋克红灯区">赛博朋克红灯区</button>
+      <button class="keyword-btn" data-value="废土加油站">废土加油站</button>
+      <button class="keyword-btn" data-value="魔法水晶洞穴">魔法水晶洞穴</button>
+      <button class="keyword-btn" data-value="星际港口">星际港口</button>
+      <button class="keyword-btn" data-value="古风江南水乡">古风江南水乡</button>
+    </div>
+
+    <div class="sub-category-title">场景细节</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="细节丰富">细节丰富</button>
+      <button class="keyword-btn" data-value="破败颓废">破败颓废</button>
+      <button class="keyword-btn" data-value="繁华热闹">繁华热闹</button>
+      <button class="keyword-btn" data-value="空旷孤寂">空旷孤寂</button>
+      <button class="keyword-btn" data-value="科技感十足">科技感十足</button>
+      <button class="keyword-btn" data-value="自然原生态">自然原生态</button>
+      <button class="keyword-btn" data-value="建筑错落有致">建筑错落有致</button>
+      <button class="keyword-btn" data-value="植被茂密">植被茂密</button>
+      <button class="keyword-btn" data-value="金属锈蚀">金属锈蚀</button>
+      <button class="keyword-btn" data-value="电路裸露">电路裸露</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="霓虹闪烁">霓虹闪烁</button>
+      <button class="keyword-btn" data-value="雾气弥漫">雾气弥漫</button>
+      <button class="keyword-btn" data-value="尘埃飞扬">尘埃飞扬</button>
+      <button class="keyword-btn" data-value="水滴反光">水滴反光</button>
+      <button class="keyword-btn" data-value="火焰跳动">火焰跳动</button>
+      <button class="keyword-btn" data-value="雪花飘落">雪花飘落</button>
+      <button class="keyword-btn" data-value="落叶满地">落叶满地</button>
+      <button class="keyword-btn" data-value="蛛网密布">蛛网密布</button>
+      <button class="keyword-btn" data-value="血迹斑斑">血迹斑斑</button>
+      <button class="keyword-btn" data-value="符文发光">符文发光</button>
+    </div>
+
+    <div class="sub-category-title">场景氛围</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="紧张压抑">紧张压抑</button>
+      <button class="keyword-btn" data-value="宁静祥和">宁静祥和</button>
+      <button class="keyword-btn" data-value="神秘诡异">神秘诡异</button>
+      <button class="keyword-btn" data-value="恢弘大气">恢弘大气</button>
+      <button class="keyword-btn" data-value="温馨治愈">温馨治愈</button>
+      <button class="keyword-btn" data-value="危险重重">危险重重</button>
+      <button class="keyword-btn" data-value="绝望无助">绝望无助</button>
+      <button class="keyword-btn" data-value="希望曙光">希望曙光</button>
+      <button class="keyword-btn" data-value="庄严神圣">庄严神圣</button>
+      <button class="keyword-btn" data-value="阴森恐怖">阴森恐怖</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="浪漫唯美">浪漫唯美</button>
+      <button class="keyword-btn" data-value="荒凉孤寂">荒凉孤寂</button>
+      <button class="keyword-btn" data-value="热血激昂">热血激昂</button>
+      <button class="keyword-btn" data-value="悲伤凄凉">悲伤凄凉</button>
+      <button class="keyword-btn" data-value="神秘莫测">神秘莫测</button>
+      <button class="keyword-btn" data-value="活力四射">活力四射</button>
+      <button class="keyword-btn" data-value="压抑沉闷">压抑沉闷</button>
+      <button class="keyword-btn" data-value="轻松愉悦">轻松愉悦</button>
+      <button class="keyword-btn" data-value="诡异怪诞">诡异怪诞</button>
+      <button class="keyword-btn" data-value="史诗感">史诗感</button>
+    </div>
+
+    <!-- 新增：植被类型 -->
+    <div class="sub-category-title">植被类型</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="针叶林">针叶林</button>
+      <button class="keyword-btn" data-value="阔叶林">阔叶林</button>
+      <button class="keyword-btn" data-value="热带雨林">热带雨林</button>
+      <button class="keyword-btn" data-value="荒漠植被">荒漠植被</button>
+      <button class="keyword-btn" data-value="水生植物">水生植物</button>
+      <button class="keyword-btn" data-value="苔藓地衣">苔藓地衣</button>
+      <button class="keyword-btn" data-value="巨型蕨类">巨型蕨类</button>
+      <button class="keyword-btn" data-value="奇幻花草">奇幻花草</button>
+      <button class="keyword-btn" data-value="枯木藤蔓">枯木藤蔓</button>
+      <button class="keyword-btn" data-value="极地苔藓">极地苔藓</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="魔法发光植物">魔法发光植物</button>
+      <button class="keyword-btn" data-value="剧毒食人花">剧毒食人花</button>
+      <button class="keyword-btn" data-value="千年古松">千年古松</button>
+      <button class="keyword-btn" data-value="桃花林">桃花林</button>
+      <button class="keyword-btn" data-value="竹林">竹林</button>
+      <button class="keyword-btn" data-value="仙人掌丛">仙人掌丛</button>
+      <button class="keyword-btn" data-value="发光蘑菇群">发光蘑菇群</button>
+      <button class="keyword-btn" data-value="水晶植物">水晶植物</button>
+      <button class="keyword-btn" data-value="机械仿生植物">机械仿生植物</button>
+      <button class="keyword-btn" data-value="水下珊瑚">水下珊瑚</button>
+    </div>
+
+    <!-- 新增：山体类型 -->
+    <div class="sub-category-title">山体类型</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="喀斯特地貌">喀斯特地貌</button>
+      <button class="keyword-btn" data-value="丹霞地貌">丹霞地貌</button>
+      <button class="keyword-btn" data-value="火山地貌">火山地貌</button>
+      <button class="keyword-btn" data-value="冰川山脉">冰川山脉</button>
+      <button class="keyword-btn" data-value="戈壁丘陵">戈壁丘陵</button>
+      <button class="keyword-btn" data-value="奇幻浮空山">奇幻浮空山</button>
+      <button class="keyword-btn" data-value="险峻悬崖">险峻悬崖</button>
+      <button class="keyword-btn" data-value="连绵山脉">连绵山脉</button>
+      <button class="keyword-btn" data-value="孤峰独秀">孤峰独秀</button>
+      <button class="keyword-btn" data-value="熔岩火山">熔岩火山</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="雪山">雪山</button>
+      <button class="keyword-btn" data-value="石林">石林</button>
+      <button class="keyword-btn" data-value="溶洞">溶洞</button>
+      <button class="keyword-btn" data-value="峡谷">峡谷</button>
+      <button class="keyword-btn" data-value="天坑">天坑</button>
+      <button class="keyword-btn" data-value="机械山脉">机械山脉</button>
+      <button class="keyword-btn" data-value="水晶山脉">水晶山脉</button>
+      <button class="keyword-btn" data-value="浮空岛屿">浮空岛屿</button>
+      <button class="keyword-btn" data-value="海底山脉">海底山脉</button>
+      <button class="keyword-btn" data-value="陨石坑">陨石坑</button>
+    </div>
+
+    <!-- 新增：地表细节 -->
+    <div class="sub-category-title">地表细节</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="龟裂土地">龟裂土地</button>
+      <button class="keyword-btn" data-value="鹅卵石滩">鹅卵石滩</button>
+      <button class="keyword-btn" data-value="熔岩纹理">熔岩纹理</button>
+      <button class="keyword-btn" data-value="积雪覆盖">积雪覆盖</button>
+      <button class="keyword-btn" data-value="沼泽泥潭">沼泽泥潭</button>
+      <button class="keyword-btn" data-value="水晶矿脉">水晶矿脉</button>
+      <button class="keyword-btn" data-value="沙砾遍地">沙砾遍地</button>
+      <button class="keyword-btn" data-value="青苔覆盖">青苔覆盖</button>
+      <button class="keyword-btn" data-value="水蚀岩石">水蚀岩石</button>
+      <button class="keyword-btn" data-value="机械残骸">机械残骸</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="金属网格地面">金属网格地面</button>
+      <button class="keyword-btn" data-value="木质地板">木质地板</button>
+      <button class="keyword-btn" data-value="大理石地面">大理石地面</button>
+      <button class="keyword-btn" data-value="石板路">石板路</button>
+      <button class="keyword-btn" data-value="泥泞道路">泥泞道路</button>
+      <button class="keyword-btn" data-value="玻璃栈道">玻璃栈道</button>
+      <button class="keyword-btn" data-value="激光网格地面">激光网格地面</button>
+      <button class="keyword-btn" data-value="符文刻纹地面">符文刻纹地面</button>
+      <button class="keyword-btn" data-value="岩浆池">岩浆池</button>
+      <button class="keyword-btn" data-value="量子悬浮地面">量子悬浮地面</button>
+    </div>
+
+    <!-- 新增：建筑描述 -->
+    <div class="sub-category-title">建筑描述</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="飞檐斗拱">飞檐斗拱</button>
+      <button class="keyword-btn" data-value="哥特式尖顶">哥特式尖顶</button>
+      <button class="keyword-btn" data-value="赛博朋克霓虹建筑">赛博朋克霓虹建筑</button>
+      <button class="keyword-btn" data-value="未来悬浮建筑">未来悬浮建筑</button>
+      <button class="keyword-btn" data-value="夯土民居">夯土民居</button>
+      <button class="keyword-btn" data-value="石砌堡垒">石砌堡垒</button>
+      <button class="keyword-btn" data-value="木质吊脚楼">木质吊脚楼</button>
+      <button class="keyword-btn" data-value="玻璃幕墙摩天楼">玻璃幕墙摩天楼</button>
+      <button class="keyword-btn" data-value="古风亭台楼阁">古风亭台楼阁</button>
+      <button class="keyword-btn" data-value="废土铁皮屋">废土铁皮屋</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="仙侠宫殿">仙侠宫殿</button>
+      <button class="keyword-btn" data-value="蒸汽朋克钟楼">蒸汽朋克钟楼</button>
+      <button class="keyword-btn" data-value="魔法塔">魔法塔</button>
+      <button class="keyword-btn" data-value="星际母舰指挥室">星际母舰指挥室</button>
+      <button class="keyword-btn" data-value="日式鸟居">日式鸟居</button>
+      <button class="keyword-btn" data-value="欧式庄园">欧式庄园</button>
+      <button class="keyword-btn" data-value="中式四合院">中式四合院</button>
+      <button class="keyword-btn" data-value="废土集装箱屋">废土集装箱屋</button>
+      <button class="keyword-btn" data-value="水下玻璃建筑">水下玻璃建筑</button>
+      <button class="keyword-btn" data-value="冰雪城堡">冰雪城堡</button>
+    </div>
+
+    <!-- 新增：天气效果 -->
+    <div class="sub-category-title">天气效果</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="大雨滂沱">大雨滂沱</button>
+      <button class="keyword-btn" data-value="细雨绵绵">细雨绵绵</button>
+      <button class="keyword-btn" data-value="雷暴天气">雷暴天气</button>
+      <button class="keyword-btn" data-value="暴雪纷飞">暴雪纷飞</button>
+      <button class="keyword-btn" data-value="沙尘暴">沙尘暴</button>
+      <button class="keyword-btn" data-value="雾天朦胧">雾天朦胧</button>
+      <button class="keyword-btn" data-value="彩虹">彩虹</button>
+      <button class="keyword-btn" data-value="极光">极光</button>
+      <button class="keyword-btn" data-value="流星雨">流星雨</button>
+      <button class="keyword-btn" data-value="日食">日食</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="月食">月食</button>
+      <button class="keyword-btn" data-value="火烧云">火烧云</button>
+      <button class="keyword-btn" data-value="雾霾">雾霾</button>
+      <button class="keyword-btn" data-value="龙卷风">龙卷风</button>
+      <button class="keyword-btn" data-value="冰雹">冰雹</button>
+      <button class="keyword-btn" data-value="魔法雨">魔法雨</button>
+      <button class="keyword-btn" data-value="荧光雪">荧光雪</button>
+      <button class="keyword-btn" data-value="酸雨">酸雨</button>
+      <button class="keyword-btn" data-value="星际尘埃">星际尘埃</button>
+      <button class="keyword-btn" data-value="无风晴朗">无风晴朗</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 6. 构图描述 -->
+  <div class="category">
+  <div class="category-title">
+  <span>📐 构图描述</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="构图描述">
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="三分构图">三分构图</button>
+      <button class="keyword-btn" data-value="对称构图">对称构图</button>
+      <button class="keyword-btn" data-value="引导线构图">引导线构图</button>
+      <button class="keyword-btn" data-value="框架式构图">框架式构图</button>
+      <button class="keyword-btn" data-value="对角线构图">对角线构图</button>
+      <button class="keyword-btn" data-value="三角形构图">三角形构图</button>
+      <button class="keyword-btn" data-value="黄金分割构图">黄金分割构图</button>
+      <button class="keyword-btn" data-value="留白构图">留白构图</button>
+      <button class="keyword-btn" data-value="密集构图">密集构图</button>
+      <button class="keyword-btn" data-value="中心构图">中心构图</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="散点构图">散点构图</button>
+      <button class="keyword-btn" data-value="低角度仰拍构图">低角度仰拍构图</button>
+      <button class="keyword-btn" data-value="高角度俯拍构图">高角度俯拍构图</button>
+      <button class="keyword-btn" data-value="鸟瞰构图">鸟瞰构图</button>
+      <button class="keyword-btn" data-value="虫眼构图">虫眼构图</button>
+      <button class="keyword-btn" data-value="前景虚化构图">前景虚化构图</button>
+      <button class="keyword-btn" data-value="后景虚化构图">后景虚化构图</button>
+      <button class="keyword-btn" data-value="全景深构图">全景深构图</button>
+      <button class="keyword-btn" data-value="动态构图">动态构图</button>
+      <button class="keyword-btn" data-value="静态构图">静态构图</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="环形构图">环形构图</button>
+      <button class="keyword-btn" data-value="S形构图">S形构图</button>
+      <button class="keyword-btn" data-value="V形构图">V形构图</button>
+      <button class="keyword-btn" data-value="十字构图">十字构图</button>
+      <button class="keyword-btn" data-value="棋盘式构图">棋盘式构图</button>
+      <button class="keyword-btn" data-value="对比构图">对比构图</button>
+      <button class="keyword-btn" data-value="平衡构图">平衡构图</button>
+      <button class="keyword-btn" data-value="失衡构图">失衡构图</button>
+      <button class="keyword-btn" data-value="层次构图">层次构图</button>
+      <button class="keyword-btn" data-value="透视构图">透视构图</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 7. 光影氛围 -->
+  <div class="category">
+  <div class="category-title">
+  <span>💡 光影氛围</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="光影氛围">
+    <div class="sub-category-title">光源类型</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="自然光">自然光</button>
+      <button class="keyword-btn" data-value="侧逆光">侧逆光</button>
+      <button class="keyword-btn" data-value="顶光">顶光</button>
+      <button class="keyword-btn" data-value="伦勃朗光">伦勃朗光</button>
+      <button class="keyword-btn" data-value="电影级布光">电影级布光</button>
+      <button class="keyword-btn" data-value="体积光">体积光</button>
+      <button class="keyword-btn" data-value="霓虹灯光">霓虹灯光</button>
+      <button class="keyword-btn" data-value="魔法光效">魔法光效</button>
+      <button class="keyword-btn" data-value="点光源">点光源</button>
+      <button class="keyword-btn" data-value="面光源">面光源</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="平行光">平行光</button>
+      <button class="keyword-btn" data-value="聚光灯">聚光灯</button>
+      <button class="keyword-btn" data-value="环境光">环境光</button>
+      <button class="keyword-btn" data-value="反射光">反射光</button>
+      <button class="keyword-btn" data-value="自发光体">自发光体</button>
+      <button class="keyword-btn" data-value="火焰光源">火焰光源</button>
+      <button class="keyword-btn" data-value="月光">月光</button>
+      <button class="keyword-btn" data-value="星光">星光</button>
+      <button class="keyword-btn" data-value="LED光源">LED光源</button>
+      <button class="keyword-btn" data-value="魔法符文光">魔法符文光</button>
+    </div>
+
+    <div class="sub-category-title">光影效果</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="软阴影">软阴影</button>
+      <button class="keyword-btn" data-value="接触阴影">接触阴影</button>
+      <button class="keyword-btn" data-value="全局光照">全局光照</button>
+      <button class="keyword-btn" data-value="自发光">自发光</button>
+      <button class="keyword-btn" data-value="菲涅尔效果">菲涅尔效果</button>
+      <button class="keyword-btn" data-value="环境光遮蔽AO">环境光遮蔽AO</button>
+      <button class="keyword-btn" data-value="硬阴影">硬阴影</button>
+      <button class="keyword-btn" data-value="投影">投影</button>
+      <button class="keyword-btn" data-value="光追效果">光追效果</button>
+      <button class="keyword-btn" data-value="焦散效果">焦散效果</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="光晕效果">光晕效果</button>
+      <button class="keyword-btn" data-value="镜头眩光">镜头眩光</button>
+      <button class="keyword-btn" data-value="丁达尔效应">丁达尔效应</button>
+      <button class="keyword-btn" data-value="色散效果">色散效果</button>
+      <button class="keyword-btn" data-value="反射折射">反射折射</button>
+      <button class="keyword-btn" data-value="次表面散射">次表面散射</button>
+      <button class="keyword-btn" data-value="漫反射">漫反射</button>
+      <button class="keyword-btn" data-value="镜面反射">镜面反射</button>
+      <button class="keyword-btn" data-value="体积雾光照">体积雾光照</button>
+      <button class="keyword-btn" data-value="光影对比强烈">光影对比强烈</button>
+    </div>
+
+    <div class="sub-category-title">时间氛围</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="黄金时刻">黄金时刻</button>
+      <button class="keyword-btn" data-value="夜景霓虹光">夜景霓虹光</button>
+      <button class="keyword-btn" data-value="日出日落光">日出日落光</button>
+      <button class="keyword-btn" data-value="午夜暗调">午夜暗调</button>
+      <button class="keyword-btn" data-value="清晨薄雾光">清晨薄雾光</button>
+      <button class="keyword-btn" data-value="黄昏暖光">黄昏暖光</button>
+      <button class="keyword-btn" data-value="正午强光">正午强光</button>
+      <button class="keyword-btn" data-value="黎明微光">黎明微光</button>
+      <button class="keyword-btn" data-value="傍晚霞光">傍晚霞光</button>
+      <button class="keyword-btn" data-value="深夜冷光">深夜冷光</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="阴天漫射光">阴天漫射光</button>
+      <button class="keyword-btn" data-value="极光光效">极光光效</button>
+      <button class="keyword-btn" data-value="四季光影变化">四季光影变化</button>
+      <button class="keyword-btn" data-value="昼夜交替光">昼夜交替光</button>
+      <button class="keyword-btn" data-value="魔法时刻">魔法时刻</button>
+      <button class="keyword-btn" data-value="日食光影">日食光影</button>
+      <button class="keyword-btn" data-value="月食光影">月食光影</button>
+      <button class="keyword-btn" data-value="星际晨光">星际晨光</button>
+      <button class="keyword-btn" data-value="末日黄昏">末日黄昏</button>
+      <button class="keyword-btn" data-value="永恒白昼">永恒白昼</button>
+    </div>
+
+    <!-- 新增：色彩氛围 -->
+    <div class="sub-category-title">色彩氛围</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="赛博朋克霓虹色">赛博朋克霓虹色</button>
+      <button class="keyword-btn" data-value="废土黄棕色调">废土黄棕色调</button>
+      <button class="keyword-btn" data-value="仙侠青绿色调">仙侠青绿色调</button>
+      <button class="keyword-btn" data-value="暗黑魔幻暗色调">暗黑魔幻暗色调</button>
+      <button class="keyword-btn" data-value="蒸汽朋克铜色调">蒸汽朋克铜色调</button>
+      <button class="keyword-btn" data-value="未来科技冷色调">未来科技冷色调</button>
+      <button class="keyword-btn" data-value="温暖治愈暖色调">温暖治愈暖色调</button>
+      <button class="keyword-btn" data-value="高饱和度色彩">高饱和度色彩</button>
+      <button class="keyword-btn" data-value="低饱和度莫兰迪">低饱和度莫兰迪</button>
+      <button class="keyword-btn" data-value="黑白对比色调">黑白对比色调</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="复古胶片色调">复古胶片色调</button>
+      <button class="keyword-btn" data-value="电影级调色">电影级调色</button>
+      <button class="keyword-btn" data-value="日系清新色调">日系清新色调</button>
+      <button class="keyword-btn" data-value="欧美油画色调">欧美油画色调</button>
+      <button class="keyword-btn" data-value="中国传统色彩">中国传统色彩</button>
+      <button class="keyword-btn" data-value="霓虹蓝紫色调">霓虹蓝紫色调</button>
+      <button class="keyword-btn" data-value="火山红橙色调">火山红橙色调</button>
+      <button class="keyword-btn" data-value="冰雪冷蓝色调">冰雪冷蓝色调</button>
+      <button class="keyword-btn" data-value="魔法紫粉色调">魔法紫粉色调</button>
+      <button class="keyword-btn" data-value="自然绿色调">自然绿色调</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 8. 镜头运镜 -->
+  <div class="category">
+  <div class="category-title">
+  <span>🎬 镜头运镜</span>
+  <button class="collapse-btn">−</button>
+  </div>
+  <div class="btn-group" id="镜头运镜">
+    <div class="sub-category-title">镜头类型</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="广角镜头">广角镜头</button>
+      <button class="keyword-btn" data-value="长焦镜头">长焦镜头</button>
+      <button class="keyword-btn" data-value="鱼眼镜头">鱼眼镜头</button>
+      <button class="keyword-btn" data-value="微距镜头">微距镜头</button>
+      <button class="keyword-btn" data-value="第一人称视角">第一人称视角</button>
+      <button class="keyword-btn" data-value="第三人称视角">第三人称视角</button>
+      <button class="keyword-btn" data-value="标准镜头">标准镜头</button>
+      <button class="keyword-btn" data-value="超广角镜头">超广角镜头</button>
+      <button class="keyword-btn" data-value="望远镜头">望远镜头</button>
+      <button class="keyword-btn" data-value="移轴镜头">移轴镜头</button>
+    </div>
+
+    <div class="sub-category-title">景别选择</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="特写">特写</button>
+      <button class="keyword-btn" data-value="近景">近景</button>
+      <button class="keyword-btn" data-value="中景">中景</button>
+      <button class="keyword-btn" data-value="全景">全景</button>
+      <button class="keyword-btn" data-value="远景">远景</button>
+      <button class="keyword-btn" data-value="大特写">大特写</button>
+      <button class="keyword-btn" data-value="半身景别">半身景别</button>
+      <button class="keyword-btn" data-value="七分景别">七分景别</button>
+      <button class="keyword-btn" data-value="大全景">大全景</button>
+      <button class="keyword-btn" data-value="显微景别">显微景别</button>
+    </div>
+
+    <div class="sub-category-title">运镜方式</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="缓慢推镜">缓慢推镜</button>
+      <button class="keyword-btn" data-value="环绕运镜">环绕运镜</button>
+      <button class="keyword-btn" data-value="稳定器运镜">稳定器运镜</button>
+      <button class="keyword-btn" data-value="静态镜头">静态镜头</button>
+      <button class="keyword-btn" data-value="跟随镜头">跟随镜头</button>
+      <button class="keyword-btn" data-value="摇镜头">摇镜头</button>
+      <button class="keyword-btn" data-value="移镜头">移镜头</button>
+      <button class="keyword-btn" data-value="升降镜头">升降镜头</button>
+      <button class="keyword-btn" data-value="甩镜头">甩镜头</button>
+      <button class="keyword-btn" data-value="推拉镜头">推拉镜头</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="变焦镜头">变焦镜头</button>
+      <button class="keyword-btn" data-value="抖动镜头">抖动镜头</button>
+      <button class="keyword-btn" data-value="慢动作镜头">慢动作镜头</button>
+      <button class="keyword-btn" data-value="快进镜头">快进镜头</button>
+      <button class="keyword-btn" data-value="倒放镜头">倒放镜头</button>
+      <button class="keyword-btn" data-value="旋转镜头">旋转镜头</button>
+      <button class="keyword-btn" data-value="俯冲镜头">俯冲镜头</button>
+      <button class="keyword-btn" data-value="拉升镜头">拉升镜头</button>
+      <button class="keyword-btn" data-value="穿越镜头">穿越镜头</button>
+      <button class="keyword-btn" data-value="窥视镜头">窥视镜头</button>
+    </div>
+
+    <!-- 新增：画质参数 -->
+    <div class="sub-category-title">画质参数</div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="8K分辨率">8K分辨率</button>
+      <button class="keyword-btn" data-value="4K分辨率">4K分辨率</button>
+      <button class="keyword-btn" data-value="2K分辨率">2K分辨率</button>
+      <button class="keyword-btn" data-value="1080P全高清">1080P全高清</button>
+      <button class="keyword-btn" data-value="超高帧率">超高帧率</button>
+      <button class="keyword-btn" data-value="HDR">HDR</button>
+      <button class="keyword-btn" data-value="RTX光线追踪">RTX光线追踪</button>
+      <button class="keyword-btn" data-value="抗锯齿">抗锯齿</button>
+      <button class="keyword-btn" data-value="高动态范围">高动态范围</button>
+      <button class="keyword-btn" data-value="超采样">超采样</button>
+    </div>
+    <div class="btn-row">
+      <button class="keyword-btn" data-value="纹理细节拉满">纹理细节拉满</button>
+      <button class="keyword-btn" data-value="法线贴图">法线贴图</button>
+      <button class="keyword-btn" data-value="置换贴图">置换贴图</button>
+      <button class="keyword-btn" data-value="高光贴图">高光贴图</button>
+      <button class="keyword-btn" data-value="粗糙度贴图">粗糙度贴图</button>
+      <button class="keyword-btn" data-value="金属度贴图">金属度贴图</button>
+      <button class="keyword-btn" data-value="AO贴图">AO贴图</button>
+      <button class="keyword-btn" data-value="烘焙光照贴图">烘焙光照贴图</button>
+      <button class="keyword-btn" data-value="体积云">体积云</button>
+      <button class="keyword-btn" data-value="物理水面">物理水面</button>
+    </div>
+  </div>
+  </div>
+
+  <!-- 结果区 -->
+  <div class="result-preview-container">
+  <div>
+  <div class="category-title">📝 游戏美术AI词典 - AI提示词</div>
+  <div class="ai-recommendation">选择关键词后自动组合专业提示词</div>
+  <textarea id="prompt-output" placeholder="点击按钮生成提示词"></textarea>
+  <div class="action-buttons">
+  <button class="action-btn copy-btn" id="copy">复制</button>
+  <button class="action-btn clear-btn" id="clear">清空</button>
+  <button class="action-btn optimize-btn" id="optimize">一键优化描述</button>
+  <a href="https://lightai-nano-banana-v2-sd.lightai.woa.com/?k=YXBwX2lkPTExMSZhcHBfbmFtZT1OYW5vIEJhbmFuYSZwcm9kdWN0X2lkPTImcHJvZHVjdF9uYW1lPUNHYW1l&lang=zh_CN" target="_blank" class="action-btn copy-btn">一键转生图</a>
+  <a href="https://lightai-jimeng-video-v1-sd.lightai.woa.com/?k=YXBwX2lkPTg4JmFwcF9uYW1lPeWNs+aipkFJ6KeG6aKRJnByb2R1Y3RfaWQ9MiZwcm9kdWN0X25hbWU9Q0dhbWU=&lang=zh_CN" target="_blank" class="action-btn optimize-btn">一键转视频</a>
+  </div>
+  </div>
+
+  <!-- 修改后的效果预览区域 -->
+  <div>
+  <!-- 第一个修改：将标题从"效果预览"改为"持续开发中" -->
+  <div class="category-title">🖼️ 持续开发中</div>
+  <div id="realtime-preview">
+    <div class="preview-buttons">
+      <a href="template.html" class="preview-btn btn-template">万用替换模版</a>
+      <a href="video-desc.html" class="preview-btn btn-video">片段视频描述</a>
+      <a href="tools.html" class="preview-btn btn-tools">工具链接合集</a>
+      <a href="material.html" class="preview-btn btn-material">素材库</a>
+    </div>
+    <div id="preview-desc">点击上方按钮进入对应二级页面</div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+  let selected = new Set();
+
+  // 初始化：确保所有分类默认展开
+  document.addEventListener('DOMContentLoaded', function() {
+    // 修复折叠按钮逻辑
+    document.querySelectorAll('.collapse-btn').forEach(btn=>{
+      btn.textContent = '−';
+      const content = btn.closest('.category-title').nextElementSibling;
+      content.style.display = 'block';
+      
+      btn.onclick = ()=>{
+        if(content.style.display === 'none'){
+          content.style.display = 'block';
+          btn.textContent = '−';
+        }else{
+          content.style.display = 'none';
+          btn.textContent = '+';
+        }
+      }
+    });
+
+    // 修复关键词按钮点击事件
+    document.querySelectorAll('.keyword-btn').forEach(btn=>{
+      btn.onclick = (e)=>{
+        e.stopPropagation();
+        const value = btn.dataset.value;
+        if(btn.classList.contains('active')){
+          btn.classList.remove('active');
+          selected.delete(value);
+        }else{
+          btn.classList.add('active');
+          selected.add(value);
+        }
+        updatePrompt();
+      }
+    });
+
+    // 优化复制按钮功能（核心修改）
+    document.getElementById('copy').addEventListener('click', function() {
+      const textarea = document.getElementById('prompt-output');
+      const text = textarea.value.trim();
+      
+      if(!text){
+        showNotification('请先选择关键词生成提示词', 'error');
+        return;
+      }
+      
+      // 方案1：优先使用Clipboard API（现代浏览器）
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(()=>{
+            showNotification('提示词已复制到剪贴板');
+          })
+          .catch(err=>{
+            console.log('Clipboard API失败，使用降级方案:', err);
+            fallbackCopyTextToClipboard(text);
+          });
+      } else {
+        // 方案2：降级方案（兼容所有浏览器）
+        fallbackCopyTextToClipboard(text);
+      }
+    });
+
+    // 清空按钮
+    document.getElementById('clear').addEventListener('click', function() {
+      selected.clear();
+      document.querySelectorAll('.keyword-btn').forEach(btn=>{
+        btn.classList.remove('active');
+      });
+      updatePrompt();
+      showNotification('已清空所有选择');
+    });
+
+    // 一键优化按钮
+    document.getElementById('optimize').addEventListener('click', function() {
+      const originalText = document.getElementById('prompt-output').value.trim();
+      if(!originalText){
+        showNotification('请先选择关键词生成提示词', 'error');
+        return;
+      }
+      const optimizedText = `${originalText}，超高细节，电影级质感，专业游戏美术，光影层次丰富，构图完美，色彩层次分明，细节拉满，符合游戏美术生产规范，8K分辨率，超高精度，细节刻画入微`;
+      document.getElementById('prompt-output').value = optimizedText;
+      showNotification('提示词已优化');
+    });
+  });
+
+  // 更新提示词文本框
+  function updatePrompt(){
+    const promptText = Array.from(selected).join('，');
+    document.getElementById('prompt-output').value = promptText;
+    
+    if(promptText){
+      document.getElementById('preview-desc').textContent = `已选择 ${selected.size} 个关键词，可点击上方按钮进入对应二级页面`;
+    }else{
+      document.getElementById('preview-desc').textContent = '点击上方按钮进入对应二级页面';
+    }
+  }
+
+  // 显示通知
+  function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification show ${type}`;
+    
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+
+  // 降级复制功能
+  function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      showNotification('提示词已复制到剪贴板');
+    } catch (err) {
+      console.error('复制失败:', err);
+      showNotification('复制失败，请手动复制', 'error');
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+</script>
