@@ -312,44 +312,61 @@ h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
   function generateVideoThumbnails() {
     const videos = document.querySelectorAll('video');
     videos.forEach(video => {
-      video.addEventListener('loadedmetadata', function() {
-        // 计算第100帧的时间（假设30fps）
-        const frameTime = 100 / 30; // 约3.33秒
-        
-        // 设置视频.currentTime到第100帧
-        video.currentTime = frameTime;
-        
-        // 当视频到达指定时间时捕获帧
-        video.addEventListener('seeked', function captureFrame() {
-          // 创建canvas元素
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
+      // 先设置默认背景色，避免黑色背景
+      const preview = video.parentElement;
+      preview.style.background = '#333';
+      
+      // 监听视频加载事件
+      video.addEventListener('loadeddata', function() {
+        try {
+          // 计算第100帧的时间（假设30fps）
+          const frameTime = 100 / 30; // 约3.33秒
           
-          // 绘制视频当前帧（第100帧）
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          // 设置视频.currentTime到第100帧
+          video.currentTime = frameTime;
           
-          // 将canvas转换为base64图片
-          const thumbnail = canvas.toDataURL('image/jpeg');
-          
-          // 设置为视频预览区域的背景
-          const preview = video.parentElement;
-          preview.style.backgroundImage = `url(${thumbnail})`;
-          preview.style.backgroundSize = 'cover';
-          preview.style.backgroundPosition = 'center';
-          
-          // 将视频重置到开始
-          video.currentTime = 0;
-          
-          // 移除事件监听器
-          video.removeEventListener('seeked', captureFrame);
-        }, { once: true });
+          // 当视频到达指定时间时捕获帧
+          video.addEventListener('seeked', function captureFrame() {
+            try {
+              // 创建canvas元素
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth || 640;
+              canvas.height = video.videoHeight || 360;
+              
+              // 绘制视频当前帧（第100帧）
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              
+              // 将canvas转换为base64图片
+              const thumbnail = canvas.toDataURL('image/jpeg');
+              
+              // 设置为视频预览区域的背景
+              preview.style.backgroundImage = `url(${thumbnail})`;
+              preview.style.backgroundSize = 'cover';
+              preview.style.backgroundPosition = 'center';
+              preview.style.backgroundRepeat = 'no-repeat';
+              
+              // 将视频重置到开始
+              video.currentTime = 0;
+            } catch (error) {
+              console.error('捕获视频帧失败:', error);
+              // 失败时使用默认背景
+              preview.style.background = '#333';
+            } finally {
+              // 移除事件监听器
+              video.removeEventListener('seeked', captureFrame);
+            }
+          }, { once: true });
+        } catch (error) {
+          console.error('设置视频时间失败:', error);
+          // 失败时使用默认背景
+          preview.style.background = '#333';
+        }
       });
       
-      // 触发loadedmetadata事件
-      if (video.readyState >= 1) {
-        const event = new Event('loadedmetadata');
+      // 触发loadeddata事件
+      if (video.readyState >= 2) {
+        const event = new Event('loadeddata');
         video.dispatchEvent(event);
       }
     });
