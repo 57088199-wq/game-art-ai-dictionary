@@ -922,17 +922,17 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
   document.addEventListener('DOMContentLoaded', function() {
     // 修复折叠按钮逻辑
     document.querySelectorAll('.collapse-btn').forEach(btn=>{
-      btn.textContent = '−';
+      btn.textContent = '+ 展开';
       const content = btn.closest('.category-title').nextElementSibling;
-      content.style.display = 'block';
+      content.style.display = 'none';
       
       btn.onclick = ()=>{
         if(content.style.display === 'none'){
           content.style.display = 'block';
-          btn.textContent = '−';
+          btn.textContent = '− 折叠';
         }else{
           content.style.display = 'none';
-          btn.textContent = '+';
+          btn.textContent = '+ 展开';
         }
       }
     });
