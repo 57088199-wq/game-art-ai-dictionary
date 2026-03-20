@@ -308,72 +308,11 @@ h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
     }, 3000);
   }
 
-  // 生成视频第100帧作为封面
-  function generateVideoThumbnails() {
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-      // 先设置默认背景色，避免黑色背景
-      const preview = video.parentElement;
-      preview.style.background = '#333';
-      
-      // 监听视频加载事件
-      video.addEventListener('loadeddata', function() {
-        try {
-          // 计算第300帧的时间（假设30fps）
-          const frameTime = 300 / 30; // 约10秒
-          
-          // 设置视频.currentTime到第300帧
-          video.currentTime = frameTime;
-          
-          // 当视频到达指定时间时捕获帧
-          video.addEventListener('seeked', function captureFrame() {
-            try {
-              // 创建canvas元素
-              const canvas = document.createElement('canvas');
-              canvas.width = video.videoWidth || 640;
-              canvas.height = video.videoHeight || 360;
-              
-              // 绘制视频当前帧（第300帧）
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-              
-              // 将canvas转换为base64图片
-              const thumbnail = canvas.toDataURL('image/jpeg');
-              
-              // 设置为视频预览区域的背景
-              preview.style.backgroundImage = `url(${thumbnail})`;
-              preview.style.backgroundSize = 'cover';
-              preview.style.backgroundPosition = 'center';
-              preview.style.backgroundRepeat = 'no-repeat';
-              
-              // 将视频重置到开始
-              video.currentTime = 0;
-            } catch (error) {
-              console.error('捕获视频帧失败:', error);
-              // 失败时使用默认背景
-              preview.style.background = '#333';
-            } finally {
-              // 移除事件监听器
-              video.removeEventListener('seeked', captureFrame);
-            }
-          }, { once: true });
-        } catch (error) {
-          console.error('设置视频时间失败:', error);
-          // 失败时使用默认背景
-          preview.style.background = '#333';
-        }
-      });
-      
-      // 触发loadeddata事件
-      if (video.readyState >= 2) {
-        const event = new Event('loadeddata');
-        video.dispatchEvent(event);
-      }
-    });
-  }
-
-  // 页面加载完成后生成缩略图
-  window.addEventListener('DOMContentLoaded', generateVideoThumbnails);
+  // 移除封面生成代码，使用video的poster属性
+  // 页面加载完成后执行其他初始化
+  window.addEventListener('DOMContentLoaded', function() {
+    // 可以在这里添加其他初始化代码
+  });
 </script>
 </body>
 </html>
