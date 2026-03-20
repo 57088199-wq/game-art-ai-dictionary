@@ -319,10 +319,10 @@ h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
       // 监听视频加载事件
       video.addEventListener('loadeddata', function() {
         try {
-          // 计算第100帧的时间（假设30fps）
-          const frameTime = 100 / 30; // 约3.33秒
+          // 计算第300帧的时间（假设30fps）
+          const frameTime = 300 / 30; // 约10秒
           
-          // 设置视频.currentTime到第100帧
+          // 设置视频.currentTime到第300帧
           video.currentTime = frameTime;
           
           // 当视频到达指定时间时捕获帧
@@ -333,7 +333,7 @@ h1 {color:#4fc3f7;text-align:center;margin-bottom:30px}
               canvas.width = video.videoWidth || 640;
               canvas.height = video.videoHeight || 360;
               
-              // 绘制视频当前帧（第100帧）
+              // 绘制视频当前帧（第300帧）
               const ctx = canvas.getContext('2d');
               ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
               
