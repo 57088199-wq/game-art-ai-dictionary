@@ -25,8 +25,8 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
 .sub-category-title{font-size:14px;color:#81d4fa;margin:10px 0 8px;padding-left:8px;border-left:2px solid #4fc3f7;display:block;}
 .collapse-btn{background:none;border:none;color:#4fc3f7;cursor:pointer;font-size:18px;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
 .btn-group{margin-bottom:15px;}
-.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
-.keyword-btn{padding:6px 12px;background:#2d2d2d;color:#e0e0e0;border:1px solid #444;border-radius:6px;cursor:pointer;transition:all 0.2s;}
+.btn-row{display:grid;grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));gap:8px;margin-bottom:12px;}
+.keyword-btn{padding:8px 16px;background:#2d2d2d;color:#e0e0e0;border:1px solid #444;border-radius:6px;cursor:pointer;transition:all 0.2s;text-align:center;height:40px;display:flex;align-items:center;justify-content:center;}
 .keyword-btn:hover{border-color:#666;}
 .keyword-btn.active{background:#0288d1;border-color:#4fc3f7;color:#fff;}
 .result-preview-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
@@ -83,6 +83,9 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
 .form-group select {width:100%;padding:8px;border:1px solid #444;border-radius:4px;background:#3a3a3a;color:#fff}
 .form-actions {display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
 .settings-btn {background:#4a6fa5}
+.category-description {background:#333;border-radius:8px;padding:15px;margin-bottom:20px;color:#fff}
+.category-description p {margin:8px 0;line-height:1.5}
+.category-description strong {color:#4fc3f7}
 </style>
 </head>
 <body>
@@ -94,6 +97,14 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
   <div class="category-title">
   <span>🖼️ 图片类</span>
   <button class="collapse-btn">−</button>
+  </div>
+  <div class="category-content">
+  <div class="category-description">
+    <p><strong>游戏概念设计图</strong>：[游戏名] 核心 [场景 / 角色] 概念图，[风格]，突出世界观与色彩基调，4K 高清，细节完整，用作前期美术锚点。</p>
+    <p><strong>角色立绘</strong>：[职业 / 种族] 全身立绘，[风格]，强化 [特征：武器 / 服饰 / 气质]，光影层次清晰，背景简洁，适配卡牌 / 宣传展示。</p>
+    <p><strong>场景氛围图</strong>：[场景类型] 氛围图，[时间 / 天气] 氛围，用 [色彩 / 光影] 传递情绪，含标志性环境细节，8K 分辨率，用作关卡美术参考。</p>
+    <p><strong>UI 界面设计</strong>：[游戏类型] 主界面 UI，[风格]，布局清晰，按钮 / 图标辨识度高，适配 [端 / 移动端]，提供分层规范。</p>
+    <p><strong>技能特效参考图</strong>：[技能名] 特效参考，[元素属性]，含起手 / 持续 / 收束关键帧，粒子 / 色彩匹配技能定位，用作特效制作视觉参考。</p>
   </div>
   <div class="btn-group" id="图片生成">
     <div class="btn-row">
@@ -134,12 +145,20 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
     </div>
   </div>
   </div>
+  </div>
 
   <!-- 2. 视频类 -->
   <div class="category">
   <div class="category-title">
   <span>🎥 视频类</span>
   <button class="collapse-btn">−</button>
+  </div>
+  <div class="category-content">
+  <div class="category-description">
+    <p><strong>游戏宣传 PV</strong>：[游戏名] 30 秒 PV，前缓后急节奏，展示核心玩法 / 场景 / 角色高光，[风格]，结尾突出 logo 与上线信息。</p>
+    <p><strong>角色动作循环动画</strong>：[职业] 待机 / 行走 / 攻击循环，24fps，动作流畅自然，适配 [引擎] 骨骼，循环无缝，用于游戏内实时播放。</p>
+    <p><strong>粒子特效演示</strong>：[技能名] 特效演示，3 秒时长，完整展示粒子生成 - 扩散 - 消散，[元素属性] 色彩 / 形态，1080P，用于特效迭代。</p>
+    <p><strong>场景天气动画</strong>：[场景名] 晴天→暴雨过渡，5 秒时长，含云层 / 雨滴 / 积水 / 光影变化，压抑氛围，用于剧情过场。</p>
   </div>
   <div class="btn-group" id="视频生成">
     <div class="btn-row">
@@ -179,12 +198,21 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
     </div>
   </div>
   </div>
+  </div>
 
   <!-- 3. 美术风格 -->
   <div class="category">
   <div class="category-title">
   <span>🎨 美术风格</span>
   <button class="collapse-btn">−</button>
+  </div>
+  <div class="category-content">
+  <div class="category-description">
+    <p><strong>写实风格</strong>：超写实 PBR，真实材质 / 光影，照片级质感，色彩自然，适配 3A / 开放世界，强调结构与纹理精度。</p>
+    <p><strong>卡通风格</strong>：二次元赛璐璐，清晰线条 + 平涂色彩，明暗对比强，造型灵动，适配二次元手游，突出表情与动作。</p>
+    <p><strong>赛博朋克</strong>：霓虹蓝 / 紫 / 粉主色调，高科技贫民窟反差，义体 / 全息广告，雨夜废土感，适配赛博题材 RPG。</p>
+    <p><strong>国风仙侠</strong>：水墨 / 工笔基底，清雅飘逸色彩，云雾 / 飞瀑 / 古建筑，仙气十足，适配仙侠 MMO，强调东方意境。</p>
+    <p><strong>像素风格</strong>：16/32 位像素，复古明快色彩，像素块构成，动作简洁，适配独立 / 横版游戏，突出怀旧趣味。</p>
   </div>
   <div class="btn-group" id="美术风格">
     <div class="sub-category-title">写实风格</div>
@@ -290,6 +318,7 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
       <button class="keyword-btn" data-value="明日方舟风格">明日方舟风格</button>
       <button class="keyword-btn" data-value="碧蓝航线风格">碧蓝航线风格</button>
     </div>
+  </div>
   </div>
   </div>
 
@@ -931,6 +960,7 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
             <option value="openai">OpenAI GPT</option>
             <option value="baidu">百度文心一言</option>
             <option value="aliyun">阿里通义千问</option>
+            <option value="doubao">豆包</option>
           </select>
         </div>
         <div class="form-group">
@@ -961,7 +991,7 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
       <a href="template.html" class="preview-btn btn-template">万用替换模版</a>
       <a href="video-desc.html" class="preview-btn btn-video">片段视频描述</a>
       <a href="tools.html" class="preview-btn btn-tools">工具链接合集</a>
-      <a href="material.html" class="preview-btn btn-material">素材库</a>
+      <a href="material.html" class="preview-btn btn-material">素材库+教程</a>
     </div>
     <div id="preview-desc">点击上方按钮进入对应二级页面</div>
   </div>
@@ -981,14 +1011,9 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
       const content = btn.closest('.category-title').nextElementSibling;
       const categoryTitle = btn.closest('.category-title').querySelector('span').textContent;
       
-      // 默认展开图片类和视频类
-      if(categoryTitle.includes('图片类') || categoryTitle.includes('视频类')) {
-        btn.textContent = '− 折叠';
-        content.style.display = 'block';
-      } else {
-        btn.textContent = '+ 展开';
-        content.style.display = 'none';
-      }
+      // 所有分类默认折叠
+      btn.textContent = '+ 展开';
+      content.style.display = 'none';
       
       btn.onclick = ()=>{
         if(content.style.display === 'none'){
@@ -1097,7 +1122,14 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
       const savedApiKey = localStorage.getItem('apiKey');
       const savedModel = localStorage.getItem('aiModel');
       
-      if(savedService) document.getElementById('ai-service').value = savedService;
+      // 如果没有保存的设置，默认使用豆包
+      if(savedService) {
+        document.getElementById('ai-service').value = savedService;
+      } else {
+        document.getElementById('ai-service').value = 'doubao';
+        localStorage.setItem('aiService', 'doubao');
+      }
+      
       if(savedApiKey) document.getElementById('api-key').value = savedApiKey;
       if(savedModel) document.getElementById('ai-model').value = savedModel;
     });
@@ -1137,6 +1169,9 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
             break;
           case 'aliyun':
             optimizedText = await optimizeWithAliyun(originalText, apiKey);
+            break;
+          case 'doubao':
+            optimizedText = await optimizeWithDoubao(originalText, apiKey);
             break;
           default:
             optimizedText = await optimizeWithOpenAI(originalText, apiKey, aiModel);
@@ -1194,6 +1229,35 @@ h1{color:#fff;text-align:center;margin-bottom:30px}
       // 阿里API的实现需要根据实际API文档进行调整
       // 这里只是一个示例
       throw new Error('阿里API暂未实现');
+    }
+    
+    // 使用豆包API优化
+    async function optimizeWithDoubao(text, apiKey) {
+      const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'ep-20260320174313-k8j9w', // 豆包模型ID
+          messages: [
+            {
+              role: 'system',
+              content: '你是一个专业的游戏美术AI提示词优化专家。请将输入的提示词优化为更加专业、详细、具体的游戏美术提示词，使其能够生成高质量的游戏美术作品。优化后的提示词应该包含更多关于细节、质感、光影、构图等方面的描述，同时保持原有的核心内容。'
+            },
+            {
+              role: 'user',
+              content: text
+            }
+          ],
+          temperature: 0.7
+        })
+      });
+      
+      const data = await response.json();
+      if(!response.ok) throw new Error(data.error.message);
+      return data.choices[0].message.content;
     }
   });
 
